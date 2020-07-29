@@ -61,7 +61,7 @@ def main():
     try:
         email = input('账号：')
         passwd = input('密码：')
-        qq = input('qq：')
+        qq = input('QQ：')
         cq = input('CQHTTP：')
         cookie = login(email, passwd)
         res = checkin(cookie)

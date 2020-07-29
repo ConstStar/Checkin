@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ master ]
   schedule:
-    - cron: 0 2,14 * * *
+    - cron: 0 5 * * *
 
 jobs:
   build:
@@ -51,13 +51,13 @@ jobs:
         ikuuu_pwd_num=${#ikuuu_pwd_list[*]}
         ikuuu_qq_num=${#ikuuu_qq_list[*]}
         if [ $ikuuu_user_num != $ikuuu_pwd_num ];then
-        echo "ikuuu 账号($ikuuu_user_num)和密码($ikuuu_pwd_num)个数不对应"
+        echo "ikuuu 账号(${ikuuu_user_num})和密码(${ikuuu_pwd_num})个数不对应"
         exit 1
         elif [ $ikuuu_user_num != $ikuuu_qq_num ];then
-        echo "ikuuu 账号($ikuuu_user_num)和QQ($ikuuu_qq_num)个数不对应"
+        echo "ikuuu 账号(${ikuuu_user_num})和QQ(${ikuuu_qq_num})个数不对应"
         exit 1
         else
-        echo "ikuu 共有 $ikuuu_user_num 个账号，即将开始签到"
+        echo "ikuu 共有 ${ikuuu_user_num} 个账号，即将开始签到"
         fi
         random_time=$(($RANDOM % 45))
         echo "等待 ${random_time} 分钟后开始签到"
