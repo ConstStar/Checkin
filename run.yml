@@ -1,0 +1,77 @@
+name: run
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  schedule:
+    - cron: 0 2,14 * * *
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install Python
+      run: |
+        sudo apt update && \
+        sudo apt install python3
+      
+    - name: requirements
+      run: |
+        pip3 install -r requirements.txt
+        
+    - name: Checkin
+      run: |
+        ikuuu_user='${{ secrets.IKUUU_USER }}'
+        ikuuu_pwd='${{ secrets.IKUUU_PWD }}'
+        ikuuu_qq='${{ secrets.IKUUU_QQ }}'
+        cq='${{ secrets.CQ }}'
+        
+        ikuuu_user_list=()
+        ikuuu_pwd_list=()
+        ikuuu_qq_list=()
+        for u in ${ikuuu_user[*]}
+        do
+        ikuuu_user_list[${#ikuuu_user_list[*]}]=${u}
+        done
+        for p in ${ikuuu_pwd[*]}
+        do
+        ikuuu_pwd_list[${#ikuuu_pwd_list[*]}]=${p}
+        done
+        
+        for q in ${ikuuu_qq[*]}
+        do
+        ikuuu_qq_list[${#ikuuu_qq_list[*]}]=${q}
+        done
+        ikuuu_user_num=${#ikuuu_user_list[*]}
+        ikuuu_pwd_num=${#ikuuu_pwd_list[*]}
+        ikuuu_qq_num=${#ikuuu_qq_list[*]}
+        if [ $ikuuu_user_num != $ikuuu_pwd_num ];then
+        echo "ikuuu 账号(${ikuuu_user_num})和密码(${ikuuu_pwd_num})个数不对应"
+        exit 1
+        elif [ $ikuuu_user_num != $ikuuu_qq_num ];then
+        echo "ikuuu 账号(${ikuuu_user_num})和QQ(${ikuuu_qq_num})个数不对应"
+        exit 1
+        else
+        echo "ikuu 共有 ${ikuuu_user_num} 个账号，即将开始签到"
+        fi
+        random_time=0
+        echo "等待 ${random_time} 分钟后开始签到"
+        for((i=1;i<=${random_time};i++));  
+        do
+        echo "倒计时:剩余 $[${random_time}-$i] 分钟"
+        sleep 1m
+        done
+        for ((i=0;i<$ikuuu_user_num;i++))
+        do
+        python3 ikuuu.py <<EOF
+        ${ikuuu_user_list[$i]}
+        ${ikuuu_pwd_list[$i]}
+        ${ikuuu_qq_list[$i]}
+        ${cq}
+        EOF
+        done
