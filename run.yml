@@ -38,7 +38,7 @@ jobs:
         do
         ikuuu_user_list[${#ikuuu_user_list[*]}]=${u}
         done
-        for p in ${ikuuu_ikuuu_pwd[*]}
+        for p in ${ikuuu_pwd[*]}
         do
         ikuuu_pwd_list[${#ikuuu_pwd_list[*]}]=${p}
         done
