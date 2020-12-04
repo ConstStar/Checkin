@@ -13,14 +13,17 @@ cq = None
 
 #发送QQ消息
 def sendMsg(msg):
-    global qq
-    global cq
+    try:
+        global qq
+        global cq
 
-    if qq == None or cq == None:
-        return
-    msg = 'ikuuu\n' + msg
-    url = f'http://{cq}/send_private_msg?message={msg}&user_id={qq}'
-    requests.get(url)
+        if qq == None or cq == None:
+            return
+        msg = 'ikuuu\n' + msg
+        url = f'http://{cq}/send_private_msg?message={msg}&user_id={qq}'
+        requests.get(url)
+    except Exception as ex:
+        msg = '发送消息失败：{}'.format(msg)
 
 # 登录账号 返回cookie
 def login(email, passwd):
